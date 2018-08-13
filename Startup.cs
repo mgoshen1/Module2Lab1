@@ -20,7 +20,12 @@ namespace Module2Lab1
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-        }
+            
+            if (env.IsDevelopment())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+           
+            }
 
         public IConfigurationRoot Configuration { get; }
 
@@ -58,20 +63,5 @@ namespace Module2Lab1
             });
         }
 
-        // This was added according to EDS specifications.
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
-
-            if (env.IsDevelopment())
-            {
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
-        }  
     }
 }
